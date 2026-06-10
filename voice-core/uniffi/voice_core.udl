@@ -1,3 +1,70 @@
 namespace voice_core {
+    /// Returns the path to the voice-hub directory (~/.voice-hub/)
     string voice_hub_dir();
+
+    // ─── STT ─────────────────────────────────────────────────────────────
+    sequence<SttModelInfo> list_available_models();
+    string start_stt_session(string model_key, u32 sample_rate, string language);
+    SttSession get_session(string session_id);
+
+    // ─── Intelligence ────────────────────────────────────────────────────
+    string render_template(string template_name, string context);
+    AiResponse infer(string model, sequence<ChatMessage> messages, f32? temperature, u32? max_tokens, string base_url, string api_key);
+
+    // ─── Providers ───────────────────────────────────────────────────────
+    string load_provider_config_json();
+    void save_provider_config_json(string json);
+};
+
+// ─── STT Types ───────────────────────────────────────────────────────────────
+
+dictionary SttModelInfo {
+    string key;
+    string display_name;
+    string description;
+    i64 size_bytes;
+    boolean requires_apple_silicon;
+};
+
+// ─── STT Session ─────────────────────────────────────────────────────────────
+
+dictionary TranscriptionChunk {
+    string text;
+    boolean is_final;
+    f64 start_time;
+    f64 end_time;
+    f32 confidence;
+};
+
+dictionary TranscriptionResult {
+    string text;
+    sequence<TranscriptionChunk> chunks;
+    f64 duration_seconds;
+    string model_key;
+    string language;
+};
+
+interface SttSession {
+    string id();
+    string status();
+    string model_key();
+    f64 buffer_duration_seconds();
+    u32 chunk_count();
+
+    sequence<TranscriptionChunk> process_chunk(sequence<f32> samples);
+    void set_chunk(TranscriptionChunk chunk);
+    TranscriptionResult finalize();
+    void reset();
+};
+
+// ─── Intelligence Types ──────────────────────────────────────────────────────
+
+dictionary ChatMessage {
+    string role;
+    string content;
+};
+
+dictionary AiResponse {
+    string content;
+    string thinking;
 };
