@@ -1,0 +1,12 @@
+/home/jake/projects/anything-voice/voice-core/target/debug/deps/humansize-aedbad173b43decd.d: /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/lib.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/options/mod.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/options/defaults.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/numeric_traits.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/scales.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/utils.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/allocating.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/formatters.rs
+
+/home/jake/projects/anything-voice/voice-core/target/debug/deps/libhumansize-aedbad173b43decd.rmeta: /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/lib.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/options/mod.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/options/defaults.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/numeric_traits.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/scales.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/utils.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/allocating.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/formatters.rs
+
+/home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/lib.rs:
+/home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/options/mod.rs:
+/home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/options/defaults.rs:
+/home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/numeric_traits.rs:
+/home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/scales.rs:
+/home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/utils.rs:
+/home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/allocating.rs:
+/home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/humansize-2.1.3/src/formatters.rs:

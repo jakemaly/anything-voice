@@ -1,0 +1,11 @@
+/home/jake/projects/anything-voice/voice-core/target/debug/deps/cargo_metadata-82e039ff526d75ae.d: /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo_metadata-0.15.4/src/lib.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo_metadata-0.15.4/src/dependency.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo_metadata-0.15.4/src/diagnostic.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo_metadata-0.15.4/src/errors.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo_metadata-0.15.4/src/messages.rs
+
+/home/jake/projects/anything-voice/voice-core/target/debug/deps/libcargo_metadata-82e039ff526d75ae.rlib: /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo_metadata-0.15.4/src/lib.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo_metadata-0.15.4/src/dependency.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo_metadata-0.15.4/src/diagnostic.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo_metadata-0.15.4/src/errors.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo_metadata-0.15.4/src/messages.rs
+
+/home/jake/projects/anything-voice/voice-core/target/debug/deps/libcargo_metadata-82e039ff526d75ae.rmeta: /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo_metadata-0.15.4/src/lib.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo_metadata-0.15.4/src/dependency.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo_metadata-0.15.4/src/diagnostic.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo_metadata-0.15.4/src/errors.rs /home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo_metadata-0.15.4/src/messages.rs
+
+/home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo_metadata-0.15.4/src/lib.rs:
+/home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo_metadata-0.15.4/src/dependency.rs:
+/home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo_metadata-0.15.4/src/diagnostic.rs:
+/home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo_metadata-0.15.4/src/errors.rs:
+/home/jake/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cargo_metadata-0.15.4/src/messages.rs:

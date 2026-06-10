@@ -1,0 +1,63 @@
+{%- macro transcript(transcript) -%}
+{%- for segment in transcript.segments %}
+{{ segment.speaker }}: {{ segment.text }}
+{%- endfor -%}
+{%- endmacro -%}
+
+{%- macro transcripts(transcripts) -%}
+{%- for transcript in transcripts %}
+{%- for segment in transcript.segments %}
+{{ segment.speaker }}: {{ segment.text }}
+{%- endfor -%}
+{%- endfor -%}
+{%- endmacro -%}
+
+{%- macro participants_list(participants) -%}
+{%- if participants.len() > 0 %}
+Participants:
+{% for p in participants -%}
+
+- {{ p.name }}{% if p.job_title.is_some() %} ({{ p.job_title.as_ref().unwrap() }}){% endif %}
+  {% endfor -%}
+  {%- endif -%}
+  {%- endmacro -%}
+
+{%- macro session_context_non_opt(s) -%}
+{%- if s.event.is_some() -%}
+{%- if s.title.is_some() %}
+Meeting: {{ s.title.as_ref().unwrap() }}
+{%- endif -%}
+{%- if s.started_at.is_some() %}
+{%- if s.ended_at.is_some() %}
+Time: {{ s.started_at.as_ref().unwrap() }} - {{ s.ended_at.as_ref().unwrap() }}
+{%- endif -%}
+{%- endif -%}
+{%- else -%}
+{%- if s.title.is_some() %}
+Session: {{ s.title.as_ref().unwrap() }}
+{%- endif -%}
+{%- endif -%}
+{%- endmacro -%}
+
+{%- macro template_numbered(template) -%}
+{%- if template.is_some() %}
+
+# Summary Template
+
+Name: {{ template.as_ref().unwrap().title }}
+{%- if template.as_ref().unwrap().description.is_some() %}
+Description: {{ template.as_ref().unwrap().description.as_ref().unwrap() }}
+{%- endif %}
+
+Sections:
+{% for section in template.as_ref().unwrap().sections -%}
+{{ loop.index }}. {{ section.title }}{% if section.description.is_some() %} - {{ section.description.as_ref().unwrap() }}{% endif %}
+{% endfor -%}
+{%- else %}
+
+# Instructions
+
+1. Analyze the content and decide the sections to use.
+2. Generate a well-formatted markdown summary.
+  {% endif -%}
+  {%- endmacro -%}

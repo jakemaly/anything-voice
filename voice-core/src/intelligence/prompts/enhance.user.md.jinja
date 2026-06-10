@@ -1,0 +1,66 @@
+# Context
+
+{% if session.event.is_some() %}
+{% if session.title.is_some() %}
+Meeting: {{ session.title.as_ref().unwrap() }}
+{% endif %}
+{% if session.started_at.is_some() %}
+{% if session.ended_at.is_some() %}
+Time: {{ session.started_at.as_ref().unwrap() }} - {{ session.ended_at.as_ref().unwrap() }}
+{% endif %}
+{% endif %}
+{% else %}
+{% if session.title.is_some() %}
+Session: {{ session.title.as_ref().unwrap() }}
+{% endif %}
+{% endif %}
+
+{% if participants.len() > 0 %}
+Participants:
+{% for p in participants -%}
+
+- {{ p.name }}{% if p.job_title.is_some() %} ({{ p.job_title.as_ref().unwrap() }}){% endif %}
+  {% endfor -%}
+  {% endif %}
+
+{% if !pre_meeting_memo.is_empty() %}
+
+# Pre-Meeting Notes
+
+{{ pre_meeting_memo }}
+{% endif %}
+{% if !post_meeting_memo.is_empty() %}
+
+# Meeting Notes
+
+{{ post_meeting_memo }}
+{% endif %}
+
+# Transcript
+
+{% for transcript in transcripts %}
+{% for segment in transcript.segments %}
+{{ segment.speaker }}: {{ segment.text }}
+{% endfor %}
+{% endfor %}
+
+{% if template.is_some() %}
+
+# Summary Template
+
+Name: {{ template.as_ref().unwrap().title }}
+{% if template.as_ref().unwrap().description.is_some() %}
+Description: {{ template.as_ref().unwrap().description.as_ref().unwrap() }}
+{% endif %}
+
+Sections:
+{% for section in template.as_ref().unwrap().sections -%}
+{{ loop.index }}. {{ section.title }}{% if section.description.is_some() %} - {{ section.description.as_ref().unwrap() }}{% endif %}
+{% endfor -%}
+{% else %}
+
+# Instructions
+
+1. Analyze the content and decide the sections to use.
+2. Generate a well-formatted markdown summary.
+  {% endif %}

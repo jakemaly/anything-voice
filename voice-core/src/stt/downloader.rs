@@ -13,6 +13,8 @@ use std::sync::Arc;
 use std::sync::atomic::{AtomicU64, Ordering};
 
 use serde::{Deserialize, Serialize};
+use tokio::fs::File;
+use tokio::io::AsyncWriteExt;
 use tokio::sync::Mutex;
 use tokio::sync::oneshot;
 use tokio_util::sync::CancellationToken;
@@ -38,19 +40,13 @@ pub enum DownloadError {
 
 // ─── Download State ─────────────────────────────────────────────────────────
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ModelManifest {
     /// Map of model key -> version/hash of downloaded model
     pub models: HashMap<String, String>,
 }
 
 impl ModelManifest {
-    pub fn new() -> Self {
-        Self {
-            models: HashMap::new(),
-        }
-    }
-
     pub fn is_downloaded(&self, key: &str) -> bool {
         self.models.contains_key(key)
     }
@@ -170,8 +166,8 @@ impl ModelDownloadManager {
 
         // Signal that we're ready to start
         {
-            let registry = self.downloads.lock().await;
-            if let Some(start_tx) = registry.start_tx(&key) {
+            let mut registry = self.downloads.lock().await;
+            if let Some(start_tx) = registry.take_start_tx(&key) {
                 let _ = start_tx.send(());
             }
         }
@@ -249,10 +245,10 @@ impl ModelDownloadManager {
         let mut manifest: ModelManifest = if manifest_path.exists() {
             match tokio::fs::read_to_string(&manifest_path).await {
                 Ok(content) => serde_json::from_str(&content).unwrap_or_default(),
-                Err(_) => ModelManifest::new(),
+                Err(_) => ModelManifest { models: HashMap::new() },
             }
         } else {
-            ModelManifest::new()
+            ModelManifest { models: HashMap::new() }
         };
         manifest.models.insert(model.key().to_string(), "1.0".to_string());
         if let Ok(json) = serde_json::to_string_pretty(&manifest) {
@@ -402,17 +398,12 @@ impl SttModel {
 
 /// Create a generation-based temp path for atomic downloads.
 fn generation_download_path(final_path: &Path, generation: u64) -> PathBuf {
-    let mut path = final_path.to_path_buf();
-    let extension = path.extension().map(|e| e.to_string_lossy().to_string());
-    path.set_file_name(format!(
-        "{}.gen.{}.tmp",
-        path.file_stem().unwrap_or_default().to_string_lossy(),
-        generation
-    ));
-    if let Some(ext) = extension {
-        path.set_extension(ext);
-    }
-    path
+    let stem = final_path
+        .file_stem()
+        .unwrap_or_default()
+        .to_string_lossy()
+        .to_string();
+    final_path.with_file_name(format!("{}.gen.{}.tmp", stem, generation))
 }
 
 // ─── Downloads Registry ─────────────────────────────────────────────────────
@@ -453,8 +444,8 @@ impl DownloadsRegistry {
         }
     }
 
-    fn start_tx(&self, key: &str) -> Option<oneshot::Sender<()>> {
-        self.active.get(key).map(|(tx, _)| tx.clone())
+    fn take_start_tx(&mut self, key: &str) -> Option<oneshot::Sender<()>> {
+        self.active.get_mut(key).map(|(tx, _)| std::mem::replace(tx, oneshot::channel().0))
     }
 
     fn take_previous(&mut self, key: &str) -> Option<CancellationToken> {
@@ -491,7 +482,7 @@ mod tests {
         let final_path = PathBuf::from("/tmp/model.bin");
         let gen_path = generation_download_path(&final_path, 42);
         assert_ne!(final_path, gen_path);
-        assert!(gen_path.to_string_lossy().contains(".gen.42.tmp"));
+        assert!(gen_path.to_string_lossy().contains("model.gen.42.tmp"));
     }
 
     #[test]
