@@ -1,0 +1,48 @@
+import { cn } from "@hypr/utils";
+
+import { CalendarNav } from "./calendar";
+import { ContactsNav } from "./contacts";
+import { SettingsNav } from "./settings";
+import { TemplatesNav } from "./templates";
+import { TimelineView } from "./timeline";
+
+import { useConfigValue } from "~/shared/config";
+import { useTabs } from "~/store/zustand/tabs";
+
+export function LeftSidebar() {
+  const currentTab = useTabs((state) => state.currentTab);
+  const sidebarTimelineEnabled = useConfigValue("sidebar_timeline_enabled");
+
+  const isSettingsMode = currentTab?.type === "settings";
+  const isCalendarMode = currentTab?.type === "calendar";
+  const isContactsMode = currentTab?.type === "contacts";
+  const isTemplatesMode = currentTab?.type === "templates";
+  const isSpecialMode =
+    isSettingsMode || isCalendarMode || isContactsMode || isTemplatesMode;
+  const isTimelineSidebarLayout = sidebarTimelineEnabled && !isSpecialMode;
+
+  return (
+    <div
+      className={cn([
+        "flex h-full w-[200px] shrink-0 flex-col gap-1 overflow-hidden",
+        isTimelineSidebarLayout ? "pt-0" : "pt-11",
+      ])}
+    >
+      <div className="flex flex-1 flex-col gap-1 overflow-hidden">
+        <div className="relative min-h-0 flex-1 overflow-hidden">
+          {isSettingsMode ? (
+            <SettingsNav />
+          ) : isCalendarMode ? (
+            <CalendarNav />
+          ) : isContactsMode ? (
+            <ContactsNav />
+          ) : isTemplatesMode ? (
+            <TemplatesNav />
+          ) : (
+            <TimelineView topChromeInset={isTimelineSidebarLayout} />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

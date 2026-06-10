@@ -1,0 +1,179 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-05-30 20:26+0900\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: el\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/settings/general/spoken-languages.tsx:177
+msgid "Add language"
+msgstr "Προσθήκη γλώσσας"
+
+#: src/settings/general/spoken-languages.tsx:175
+msgid "Add spoken language"
+msgstr "Προσθήκη προφορικής γλώσσας"
+
+#: src/settings/general/spoken-languages.tsx:116
+msgid "Additional spoken languages"
+msgstr "Πρόσθετες ομιλούμενες γλώσσες"
+
+#: src/settings/general/app-settings.tsx:35
+msgid "Always ready without manually launching."
+msgstr "Πάντα έτοιμο χωρίς μη αυτόματη εκκίνηση."
+
+#: src/settings/general/index.tsx:136
+msgid "App"
+msgstr "Εφαρμογή"
+
+#: src/settings/general/theme.tsx:45
+msgid "Appearance"
+msgstr ""
+
+#: src/settings/general/app-settings.tsx:71
+msgid "Automatically start listening when an event-backed note reaches its scheduled start time."
+msgstr "Αυτόματη έναρξη ακρόασης όταν μια σημείωση που υποστηρίζεται από συμβάν φτάσει στην προγραμματισμένη ώρα έναρξης."
+
+#: src/settings/general/app-settings.tsx:82
+msgid "Automatically stop listening when the meeting app releases the microphone."
+msgstr "Διακόψτε αυτόματα την ακρόαση όταν η εφαρμογή σύσκεψης απελευθερώσει το μικρόφωνο."
+
+#: src/settings/general/theme.tsx:48
+msgid "Choose light, dark, or match your system setting."
+msgstr ""
+
+#: src/settings/general/theme.tsx:35
+msgid "Dark"
+msgstr ""
+
+#: src/settings/general/index.tsx:255
+msgid "Data"
+msgstr "Δεδομένα"
+
+#: src/settings/general/week-start.tsx:58
+msgid "First day of the week in the calendar view"
+msgstr ""
+
+#: src/settings/general/index.tsx:206
+msgid "Language & Region"
+msgstr "Γλώσσα και περιοχή"
+
+#: src/settings/general/main-language.tsx:53
+msgid "Language for summaries, chats, and AI-generated responses"
+msgstr "Γλώσσα για περιλήψεις, συνομιλίες και απαντήσεις που δημιουργούνται από AI"
+
+#: src/settings/general/theme.tsx:34
+msgid "Light"
+msgstr ""
+
+#: src/settings/general/main-language.tsx:50
+msgid "Main language"
+msgstr "Κύρια γλώσσα"
+
+#: src/settings/general/app-settings.tsx:65
+msgid "Meetings"
+msgstr "Συναντήσεις"
+
+#: src/settings/general/week-start.tsx:40
+msgid "Monday"
+msgstr ""
+
+#: src/settings/general/main-language.tsx:64
+#: src/settings/general/spoken-languages.tsx:218
+msgid "No matching languages found"
+msgstr "Δεν βρέθηκαν γλώσσες που να ταιριάζουν"
+
+#: src/settings/general/searchable-select.tsx:122
+msgid "No results found."
+msgstr ""
+
+#: src/settings/general/index.tsx:265
+msgid "Notifications"
+msgstr "Ειδοποιήσεις"
+
+#: src/settings/general/index.tsx:274
+msgid "Permissions"
+msgstr ""
+
+#: src/settings/general/main-language.tsx:63
+msgid "Search language..."
+msgstr "Αναζήτηση γλώσσας..."
+
+#: src/settings/general/searchable-select.tsx:116
+msgid "Search..."
+msgstr ""
+
+#: src/settings/general/theme.tsx:61
+msgid "Select appearance"
+msgstr ""
+
+#: src/settings/general/week-start.tsx:63
+msgid "Select day"
+msgstr ""
+
+#: src/settings/general/main-language.tsx:62
+msgid "Select language"
+msgstr "Επιλογή γλώσσας"
+
+#: src/settings/general/searchable-select.tsx:95
+msgid "Select..."
+msgstr ""
+
+#: src/settings/general/app-settings.tsx:53
+msgid "Send anonymous usage analytics to help improve Anarlog."
+msgstr "Στείλτε ανώνυμα αναλυτικά στοιχεία χρήσης για να συμβάλετε στη βελτίωση του Anarlog."
+
+#: src/settings/general/app-settings.tsx:51
+msgid "Share usage data"
+msgstr "Κοινή χρήση δεδομένων χρήσης"
+
+#: src/settings/general/app-settings.tsx:91
+msgid "Show floating bar"
+msgstr "Εμφάνιση αιωρούμενης γραμμής"
+
+#: src/settings/general/app-settings.tsx:93
+msgid "Show the compact floating control while listening."
+msgstr "Εμφάνιση του συμπαγούς αιωρούμενου χειριστηρίου κατά την ακρόαση."
+
+#: src/settings/general/app-settings.tsx:41
+msgid "Show timeline in sidebar"
+msgstr "Εμφάνιση χρονολογίου στην πλαϊνή γραμμή"
+
+#: src/settings/general/app-settings.tsx:33
+msgid "Start Anarlog at login"
+msgstr "Ξεκινήστε το Anarlog κατά τη σύνδεση"
+
+#: src/settings/general/app-settings.tsx:69
+msgid "Start when meeting begins"
+msgstr "Ξεκινήστε όταν ξεκινά η σύσκεψη"
+
+#: src/settings/general/app-settings.tsx:80
+msgid "Stop when meeting ends"
+msgstr "Διακοπή όταν τελειώσει η σύσκεψη"
+
+#: src/settings/general/week-start.tsx:39
+msgid "Sunday"
+msgstr ""
+
+#: src/settings/general/theme.tsx:36
+msgid "System"
+msgstr ""
+
+#: src/settings/general/spoken-languages.tsx:119
+msgid "The main language is always included for transcription"
+msgstr "Η κύρια γλώσσα περιλαμβάνεται πάντα για μεταγραφή"
+
+#: src/settings/general/app-settings.tsx:43
+msgid "Use the left sidebar timeline instead of the top timeline."
+msgstr "Χρησιμοποιήστε την αριστερή πλαϊνή γραμμή χρόνου αντί για την επάνω γραμμή χρόνου."
+
+#: src/settings/general/week-start.tsx:55
+msgid "Week starts on"
+msgstr ""

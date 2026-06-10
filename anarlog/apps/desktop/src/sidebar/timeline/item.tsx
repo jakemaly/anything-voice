@@ -1,0 +1,605 @@
+import { SquareIcon } from "lucide-react";
+import {
+  memo,
+  type DragEvent,
+  type RefCallback,
+  useCallback,
+  useMemo,
+} from "react";
+
+import { commands as fsSyncCommands } from "@hypr/plugin-fs-sync";
+import { commands as openerCommands } from "@hypr/plugin-opener2";
+import { DancingSticks } from "@hypr/ui/components/ui/dancing-sticks";
+import { Spinner } from "@hypr/ui/components/ui/spinner";
+import { cn, format, getYear, safeParseDate, TZDate } from "@hypr/utils";
+
+import {
+  type EventTimelineItem,
+  isTimelineItemInFuture,
+  type SessionTimelineItem,
+  type TimelineItem,
+  TimelinePrecision,
+} from "./utils";
+
+import { writeSessionContextDragData } from "~/chat/context/session-drag";
+import { SessionPreviewCard } from "~/session/components/session-preview-card";
+import { useIsSessionEnhancing } from "~/session/hooks/useEnhancedNotes";
+import { getSessionEvent } from "~/session/utils";
+import type { MenuItemDef } from "~/shared/hooks/useNativeContextMenu";
+import { InteractiveButton } from "~/shared/ui/interactive-button";
+import { useIgnoredEvents } from "~/store/tinybase/hooks";
+import {
+  captureSessionData,
+  deleteSessionCascade,
+  finalizeSessionDeletion,
+} from "~/store/tinybase/store/deleteSession";
+import * as main from "~/store/tinybase/store/main";
+import { getOrCreateSessionForEventId } from "~/store/tinybase/store/sessions";
+import { useSessionTitle } from "~/store/zustand/live-title";
+import { type TabInput, useTabs } from "~/store/zustand/tabs";
+import { useTimelineSelection } from "~/store/zustand/timeline-selection";
+import { useUndoDelete } from "~/store/zustand/undo-delete";
+import { useListener } from "~/stt/contexts";
+
+export const TimelineItemComponent = memo(
+  ({
+    item,
+    precision,
+    selected,
+    timezone,
+    multiSelected,
+    flatItemKeys,
+    selectedNodeRef,
+  }: {
+    item: TimelineItem;
+    precision: TimelinePrecision;
+    selected: boolean;
+    timezone?: string;
+    multiSelected: boolean;
+    flatItemKeys: string[];
+    selectedNodeRef?: RefCallback<HTMLDivElement>;
+  }) => {
+    if (item.type === "event") {
+      return (
+        <EventItem
+          item={item}
+          precision={precision}
+          selected={selected}
+          timezone={timezone}
+          multiSelected={multiSelected}
+          flatItemKeys={flatItemKeys}
+          selectedNodeRef={selectedNodeRef}
+        />
+      );
+    }
+    return (
+      <SessionItem
+        item={item}
+        precision={precision}
+        selected={selected}
+        timezone={timezone}
+        multiSelected={multiSelected}
+        flatItemKeys={flatItemKeys}
+        selectedNodeRef={selectedNodeRef}
+      />
+    );
+  },
+);
+
+function ItemBase({
+  title,
+  displayTime,
+  isLive,
+  amplitude,
+  showSpinner,
+  selected,
+  ignored,
+  muted,
+  multiSelected,
+  onClick,
+  onCmdClick,
+  onShiftClick,
+  onStop,
+  onDragStart,
+  contextMenu,
+  draggable,
+  selectedNodeRef,
+  timelineSessionId,
+}: {
+  title: string;
+  displayTime: string;
+  isLive?: boolean;
+  amplitude?: number;
+  showSpinner?: boolean;
+  selected: boolean;
+  ignored?: boolean;
+  muted?: boolean;
+  multiSelected: boolean;
+  onClick: () => void;
+  onCmdClick: () => void;
+  onShiftClick: () => void;
+  onStop?: () => void;
+  onDragStart?: (event: DragEvent<HTMLElement>) => void;
+  contextMenu: MenuItemDef[];
+  draggable?: boolean;
+  selectedNodeRef?: RefCallback<HTMLDivElement>;
+  timelineSessionId?: string;
+}) {
+  const hasSelection = useTimelineSelection((s) => s.selectedIds.length > 0);
+  const showLiveStop = isLive && onStop;
+  const showTrailingStatus = showLiveStop || showSpinner;
+
+  return (
+    <div
+      ref={selectedNodeRef}
+      data-sidebar-timeline-session-id={timelineSessionId}
+      className="group/sidebar-live-item relative"
+    >
+      <InteractiveButton
+        onClick={ignored ? undefined : onClick}
+        onCmdClick={ignored ? undefined : onCmdClick}
+        onShiftClick={ignored ? undefined : onShiftClick}
+        onDragStart={onDragStart}
+        contextMenu={hasSelection ? undefined : contextMenu}
+        className={cn([
+          "w-full rounded-lg px-3 py-2 text-left",
+          showTrailingStatus && "pr-10",
+          ignored ? "cursor-default" : "cursor-pointer",
+          multiSelected && "bg-accent",
+          !multiSelected && selected && "bg-accent",
+          !multiSelected && !selected && "hover:bg-accent/50",
+          isLive && [
+            "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+            "focus-visible:ring-destructive/40 focus-visible:ring-2 focus-visible:outline-hidden",
+          ],
+          ignored && "opacity-40",
+          !ignored && muted && !isLive && "opacity-65",
+        ])}
+        draggable={draggable}
+      >
+        <div className="flex items-center gap-2">
+          <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+            <div
+              className={cn(
+                "pointer-events-none truncate text-sm font-normal",
+                ignored && "line-through",
+              )}
+            >
+              {title || "Untitled"}
+            </div>
+            {displayTime && (
+              <div
+                className={cn([
+                  "font-mono text-xs",
+                  isLive
+                    ? "text-destructive-foreground/65"
+                    : "text-muted-foreground",
+                ])}
+              >
+                {displayTime}
+              </div>
+            )}
+          </div>
+        </div>
+      </InteractiveButton>
+      {showSpinner ? (
+        <div
+          aria-hidden
+          className="text-muted-foreground pointer-events-none absolute top-1/2 right-3 flex size-5 -translate-y-1/2 items-center justify-center"
+        >
+          <Spinner size={14} />
+        </div>
+      ) : null}
+      {showLiveStop ? (
+        <button
+          type="button"
+          aria-label="Stop listening"
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            onStop();
+          }}
+          className={cn([
+            "absolute top-1/2 right-3 flex size-5 -translate-y-1/2 items-center justify-center rounded-sm",
+            "text-white/80 transition-colors hover:bg-white/15 hover:text-white",
+            "focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:outline-hidden",
+          ])}
+        >
+          <span
+            aria-hidden
+            className="flex items-center justify-center group-hover/sidebar-live-item:hidden"
+          >
+            <DancingSticks
+              amplitude={amplitude ?? 0.25}
+              color="currentColor"
+              height={14}
+              width={13}
+              stickWidth={2}
+              gap={2}
+            />
+          </span>
+          <span
+            aria-hidden
+            className="hidden items-center justify-center group-hover/sidebar-live-item:flex"
+          >
+            <SquareIcon size={10} className="fill-current" />
+          </span>
+        </button>
+      ) : null}
+    </div>
+  );
+}
+
+const EventItem = memo(
+  ({
+    item,
+    precision,
+    selected,
+    timezone,
+    multiSelected,
+    flatItemKeys,
+    selectedNodeRef,
+  }: {
+    item: EventTimelineItem;
+    precision: TimelinePrecision;
+    selected: boolean;
+    timezone?: string;
+    multiSelected: boolean;
+    flatItemKeys: string[];
+    selectedNodeRef?: RefCallback<HTMLDivElement>;
+  }) => {
+    const store = main.UI.useStore(main.STORE_ID);
+    const openCurrent = useTabs((state) => state.openCurrent);
+    const openNew = useTabs((state) => state.openNew);
+
+    const eventId = item.id;
+    const trackingIdEvent = item.data.tracking_id_event;
+    const title = item.data.title || "Untitled";
+    const recurrenceSeriesId = item.data.recurrence_series_id;
+
+    const {
+      isIgnored,
+      ignoreEvent,
+      unignoreEvent,
+      ignoreSeries,
+      unignoreSeries,
+    } = useIgnoredEvents();
+
+    const ignored = isIgnored(trackingIdEvent, recurrenceSeriesId);
+
+    const displayTime = useMemo(
+      () => formatDisplayTime(item.data.started_at, precision, timezone),
+      [item.data.started_at, precision, timezone],
+    );
+
+    const openEvent = useCallback(
+      (openInNewTab: boolean) => {
+        if (!store || !eventId) {
+          return;
+        }
+
+        const sessionId = getOrCreateSessionForEventId(store, eventId, title);
+        const tab: TabInput = { id: sessionId, type: "sessions" };
+        openInNewTab ? openNew(tab) : openCurrent(tab);
+      },
+      [eventId, store, title, openCurrent, openNew],
+    );
+
+    const itemKey = `event-${item.id}`;
+    const muted = isTimelineItemInFuture(item);
+
+    const handleClick = useCallback(() => {
+      useTimelineSelection.getState().setAnchor(itemKey);
+      openEvent(false);
+    }, [openEvent, itemKey]);
+
+    const handleCmdClick = useCallback(() => {
+      useTimelineSelection.getState().toggleSelect(itemKey);
+    }, [itemKey]);
+
+    const handleShiftClick = useCallback(() => {
+      useTimelineSelection.getState().selectRange(flatItemKeys, itemKey);
+    }, [flatItemKeys, itemKey]);
+
+    const handleIgnore = useCallback(() => {
+      if (!trackingIdEvent) return;
+      ignoreEvent(trackingIdEvent);
+    }, [trackingIdEvent, ignoreEvent]);
+
+    const handleUnignore = useCallback(() => {
+      if (!trackingIdEvent) return;
+      unignoreEvent(trackingIdEvent);
+    }, [trackingIdEvent, unignoreEvent]);
+
+    const handleUnignoreSeries = useCallback(() => {
+      if (!recurrenceSeriesId) return;
+      unignoreSeries(recurrenceSeriesId);
+    }, [recurrenceSeriesId, unignoreSeries]);
+
+    const handleIgnoreSeries = useCallback(() => {
+      if (!recurrenceSeriesId) return;
+      ignoreSeries(recurrenceSeriesId);
+    }, [recurrenceSeriesId, ignoreSeries]);
+
+    const handleOpenNewTab = useCallback(() => {
+      openEvent(true);
+    }, [openEvent]);
+
+    const contextMenu = useMemo(() => {
+      if (ignored) {
+        if (recurrenceSeriesId) {
+          return [
+            {
+              id: "unignore",
+              text: "Show This Event",
+              action: handleUnignore,
+            },
+            {
+              id: "unignore-series",
+              text: "Show All Recurring Events",
+              action: handleUnignoreSeries,
+            },
+          ];
+        }
+        return [{ id: "unignore", text: "Show Event", action: handleUnignore }];
+      }
+      const menu: MenuItemDef[] = [
+        {
+          id: "open-new-tab",
+          text: "Open in New Tab",
+          action: handleOpenNewTab,
+        },
+        { separator: true as const },
+        {
+          id: "ignore",
+          text: recurrenceSeriesId ? "Delete This Event" : "Delete Event",
+          action: handleIgnore,
+        },
+      ];
+      if (recurrenceSeriesId) {
+        menu.push({
+          id: "ignore-series",
+          text: "Delete All Recurring Events",
+          action: handleIgnoreSeries,
+        });
+      }
+      return menu;
+    }, [
+      ignored,
+      handleOpenNewTab,
+      handleIgnore,
+      handleUnignore,
+      handleUnignoreSeries,
+      handleIgnoreSeries,
+      recurrenceSeriesId,
+    ]);
+
+    return (
+      <ItemBase
+        title={title}
+        displayTime={displayTime}
+        selected={selected}
+        ignored={ignored}
+        muted={muted}
+        multiSelected={multiSelected}
+        onClick={handleClick}
+        onCmdClick={handleCmdClick}
+        onShiftClick={handleShiftClick}
+        contextMenu={contextMenu}
+        selectedNodeRef={selected ? selectedNodeRef : undefined}
+      />
+    );
+  },
+);
+
+const SessionItem = memo(
+  ({
+    item,
+    precision,
+    selected,
+    timezone,
+    multiSelected,
+    flatItemKeys,
+    selectedNodeRef,
+  }: {
+    item: SessionTimelineItem;
+    precision: TimelinePrecision;
+    selected: boolean;
+    timezone?: string;
+    multiSelected: boolean;
+    flatItemKeys: string[];
+    selectedNodeRef?: RefCallback<HTMLDivElement>;
+  }) => {
+    const store = main.UI.useStore(main.STORE_ID);
+    const indexes = main.UI.useIndexes(main.STORE_ID);
+    const openCurrent = useTabs((state) => state.openCurrent);
+    const openNew = useTabs((state) => state.openNew);
+    const invalidateResource = useTabs((state) => state.invalidateResource);
+    const addDeletion = useUndoDelete((state) => state.addDeletion);
+    const { ignoreEvent } = useIgnoredEvents();
+
+    const sessionId = item.id;
+    const storeTitle = main.UI.useCell(
+      "sessions",
+      sessionId,
+      "title",
+      main.STORE_ID,
+    ) as string | undefined;
+    const title = useSessionTitle(sessionId, storeTitle);
+
+    const { sessionMode, stop, amplitude } = useListener((state) => ({
+      sessionMode: state.getSessionMode(sessionId),
+      stop: state.stop,
+      amplitude: state.live.amplitude,
+    }));
+    const isEnhancing = useIsSessionEnhancing(sessionId);
+    const isLive = sessionMode === "active";
+    const isFinalizing = sessionMode === "finalizing";
+    const isBatching = sessionMode === "running_batch";
+    const showSpinner =
+      !selected && !isLive && (isFinalizing || isEnhancing || isBatching);
+
+    const sessionEvent = useMemo(
+      () => getSessionEvent(item.data),
+      [item.data.event_json],
+    );
+
+    const displayTime = useMemo(
+      () =>
+        formatDisplayTime(
+          sessionEvent?.started_at ?? item.data.created_at,
+          precision,
+          timezone,
+        ),
+      [sessionEvent?.started_at, item.data.created_at, precision, timezone],
+    );
+    const muted = isTimelineItemInFuture(item);
+
+    const itemKey = `session-${item.id}`;
+
+    const handleClick = useCallback(() => {
+      useTimelineSelection.getState().setAnchor(itemKey);
+      openCurrent({ id: sessionId, type: "sessions" });
+    }, [sessionId, openCurrent, itemKey]);
+
+    const handleCmdClick = useCallback(() => {
+      useTimelineSelection.getState().toggleSelect(itemKey);
+    }, [itemKey]);
+
+    const handleShiftClick = useCallback(() => {
+      useTimelineSelection.getState().selectRange(flatItemKeys, itemKey);
+    }, [flatItemKeys, itemKey]);
+
+    const handleDragStart = useCallback(
+      (event: DragEvent<HTMLElement>) => {
+        writeSessionContextDragData(
+          event.dataTransfer,
+          sessionId,
+          title || "Untitled",
+        );
+      },
+      [sessionId, title],
+    );
+
+    const handleOpenNewTab = useCallback(() => {
+      openNew({ id: sessionId, type: "sessions" });
+    }, [sessionId, openNew]);
+
+    const handleDelete = useCallback(() => {
+      if (!store) {
+        return;
+      }
+
+      if (sessionEvent?.tracking_id) {
+        ignoreEvent(sessionEvent.tracking_id);
+      }
+
+      const capturedData = captureSessionData(store, indexes, sessionId);
+
+      invalidateResource("sessions", sessionId);
+      void deleteSessionCascade(store, indexes, sessionId, {
+        deferFilesystemDelete: true,
+      });
+
+      if (capturedData) {
+        addDeletion(capturedData, () => {
+          void finalizeSessionDeletion(sessionId);
+        });
+      }
+    }, [
+      store,
+      indexes,
+      sessionId,
+      sessionEvent,
+      ignoreEvent,
+      invalidateResource,
+      addDeletion,
+    ]);
+
+    const handleShowInFinder = useCallback(async () => {
+      const result = await fsSyncCommands.sessionDir(sessionId);
+      if (result.status === "ok") {
+        await openerCommands.openPath(result.data, null);
+      }
+    }, [sessionId]);
+
+    const contextMenu = useMemo(
+      () => [
+        {
+          id: "open-new-tab",
+          text: "Open in New Tab",
+          action: handleOpenNewTab,
+        },
+        {
+          id: "show",
+          text: "Show in Finder",
+          action: handleShowInFinder,
+        },
+        { separator: true as const },
+        {
+          id: "delete",
+          text: "Delete Note",
+          action: handleDelete,
+        },
+      ],
+      [handleOpenNewTab, handleShowInFinder, handleDelete],
+    );
+
+    return (
+      <SessionPreviewCard
+        sessionId={sessionId}
+        side="right"
+        enabled={!selected}
+      >
+        <ItemBase
+          title={title}
+          displayTime={displayTime}
+          isLive={isLive}
+          amplitude={Math.max(
+            0.25,
+            Math.min(Math.hypot(amplitude.mic, amplitude.speaker), 1),
+          )}
+          showSpinner={showSpinner}
+          selected={selected}
+          muted={muted}
+          multiSelected={multiSelected}
+          onClick={handleClick}
+          onCmdClick={handleCmdClick}
+          onShiftClick={handleShiftClick}
+          onStop={stop}
+          onDragStart={handleDragStart}
+          contextMenu={contextMenu}
+          selectedNodeRef={selected ? selectedNodeRef : undefined}
+          timelineSessionId={sessionId}
+          draggable
+        />
+      </SessionPreviewCard>
+    );
+  },
+);
+
+function formatDisplayTime(
+  timestamp: string | null | undefined,
+  precision: TimelinePrecision,
+  timezone?: string,
+): string {
+  const parsed = safeParseDate(timestamp);
+  if (!parsed) {
+    return "";
+  }
+
+  const date = timezone ? new TZDate(parsed, timezone) : parsed;
+  const time = format(date, "h:mm a").toUpperCase();
+
+  if (precision === "time") {
+    return time;
+  }
+
+  const now = timezone ? new TZDate(new Date(), timezone) : new Date();
+  const sameYear = getYear(date) === getYear(now);
+  const dateStr = sameYear
+    ? format(date, "MMM d")
+    : format(date, "MMM d, yyyy");
+
+  return `${dateStr}, ${time}`;
+}

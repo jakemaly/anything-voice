@@ -1,0 +1,32 @@
+# Dependencies (Never track these, they bloat Git)
+node_modules/
+.pnpm-store/
+.yarn/
+
+# Environments & Secrets (CRITICAL: Prevents leaking API keys/passwords)
+.env
+.env.local
+.env.*.local
+*.env
+supabase/.env
+
+# Build outputs & Caches
+dist/
+.next/
+.turbo/
+out/
+build/
+.cache/
+
+# Operating System garbage
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp

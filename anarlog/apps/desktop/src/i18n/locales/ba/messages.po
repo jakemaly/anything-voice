@@ -1,0 +1,179 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-05-30 20:26+0900\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: ba\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/settings/general/spoken-languages.tsx:177
+msgid "Add language"
+msgstr "Тел өҫтәү"
+
+#: src/settings/general/spoken-languages.tsx:175
+msgid "Add spoken language"
+msgstr "Һөйләү телен өҫтәү"
+
+#: src/settings/general/spoken-languages.tsx:116
+msgid "Additional spoken languages"
+msgstr "Өҫтәмә һөйләү телдәре"
+
+#: src/settings/general/app-settings.tsx:35
+msgid "Always ready without manually launching."
+msgstr "Ҡул менән эшләтеп ебәрмәйенсә һәр ваҡыт әҙер."
+
+#: src/settings/general/index.tsx:136
+msgid "App"
+msgstr "Ҡушымта"
+
+#: src/settings/general/theme.tsx:45
+msgid "Appearance"
+msgstr ""
+
+#: src/settings/general/app-settings.tsx:71
+msgid "Automatically start listening when an event-backed note reaches its scheduled start time."
+msgstr "Ваҡиғалар менән нығытылған иҫкәрмә планлаштырылған башланғыс ваҡытҡа еткәс, автоматик рәүештә тыңлауҙы башлай."
+
+#: src/settings/general/app-settings.tsx:82
+msgid "Automatically stop listening when the meeting app releases the microphone."
+msgstr "Осрашыу ҡушымтаһы микрофонды бушатҡас, тыңлауҙы автоматик рәүештә туҡтата."
+
+#: src/settings/general/theme.tsx:48
+msgid "Choose light, dark, or match your system setting."
+msgstr ""
+
+#: src/settings/general/theme.tsx:35
+msgid "Dark"
+msgstr ""
+
+#: src/settings/general/index.tsx:255
+msgid "Data"
+msgstr "Мәғлүмәттәр"
+
+#: src/settings/general/week-start.tsx:58
+msgid "First day of the week in the calendar view"
+msgstr ""
+
+#: src/settings/general/index.tsx:206
+msgid "Language & Region"
+msgstr "Тел һәм төбәк"
+
+#: src/settings/general/main-language.tsx:53
+msgid "Language for summaries, chats, and AI-generated responses"
+msgstr "Йомғаҡлау, чаттар һәм ЯИ-генерацияланған яуаптар өсөн тел"
+
+#: src/settings/general/theme.tsx:34
+msgid "Light"
+msgstr ""
+
+#: src/settings/general/main-language.tsx:50
+msgid "Main language"
+msgstr "Төп тел"
+
+#: src/settings/general/app-settings.tsx:65
+msgid "Meetings"
+msgstr "Осрашыуҙар"
+
+#: src/settings/general/week-start.tsx:40
+msgid "Monday"
+msgstr ""
+
+#: src/settings/general/main-language.tsx:64
+#: src/settings/general/spoken-languages.tsx:218
+msgid "No matching languages found"
+msgstr "Тап килгән телдәр табылмаған"
+
+#: src/settings/general/searchable-select.tsx:122
+msgid "No results found."
+msgstr ""
+
+#: src/settings/general/index.tsx:265
+msgid "Notifications"
+msgstr "Хәбәр итеүҙәр"
+
+#: src/settings/general/index.tsx:274
+msgid "Permissions"
+msgstr ""
+
+#: src/settings/general/main-language.tsx:63
+msgid "Search language..."
+msgstr "Эҙләү теле..."
+
+#: src/settings/general/searchable-select.tsx:116
+msgid "Search..."
+msgstr ""
+
+#: src/settings/general/theme.tsx:61
+msgid "Select appearance"
+msgstr ""
+
+#: src/settings/general/week-start.tsx:63
+msgid "Select day"
+msgstr ""
+
+#: src/settings/general/main-language.tsx:62
+msgid "Select language"
+msgstr "Телде һайлау"
+
+#: src/settings/general/searchable-select.tsx:95
+msgid "Select..."
+msgstr ""
+
+#: src/settings/general/app-settings.tsx:53
+msgid "Send anonymous usage analytics to help improve Anarlog."
+msgstr "Анарлогты яҡшыртыу өсөн аноним ҡулланыу аналитикаһын ебәрегеҙ."
+
+#: src/settings/general/app-settings.tsx:51
+msgid "Share usage data"
+msgstr "Ҡулланыу мәғлүмәттәре менән уртаҡлашыу"
+
+#: src/settings/general/app-settings.tsx:91
+msgid "Show floating bar"
+msgstr "Йөҙөүсе һыҙыҡты күрһәтеү"
+
+#: src/settings/general/app-settings.tsx:93
+msgid "Show the compact floating control while listening."
+msgstr "Тыңлағанда компактлы йөҙөүсе идара итеү ҡоролмаһын күрһәтегеҙ."
+
+#: src/settings/general/app-settings.tsx:41
+msgid "Show timeline in sidebar"
+msgstr "Ян панелдә ваҡыт һыҙығын күрһәтеү"
+
+#: src/settings/general/app-settings.tsx:33
+msgid "Start Anarlog at login"
+msgstr "Логин ваҡытында Анарлогты башлағыҙ"
+
+#: src/settings/general/app-settings.tsx:69
+msgid "Start when meeting begins"
+msgstr "Осрашыу башланғас башла"
+
+#: src/settings/general/app-settings.tsx:80
+msgid "Stop when meeting ends"
+msgstr "Осрашыу тамамланғас туҡта"
+
+#: src/settings/general/week-start.tsx:39
+msgid "Sunday"
+msgstr ""
+
+#: src/settings/general/theme.tsx:36
+msgid "System"
+msgstr ""
+
+#: src/settings/general/spoken-languages.tsx:119
+msgid "The main language is always included for transcription"
+msgstr "Төп тел транскрипция өсөн һәр ваҡыт индерелә"
+
+#: src/settings/general/app-settings.tsx:43
+msgid "Use the left sidebar timeline instead of the top timeline."
+msgstr "Өҫкө ваҡыт һыҙығы урынына һул ян һыҙығы ваҡыт һыҙығын ҡулланығыҙ."
+
+#: src/settings/general/week-start.tsx:55
+msgid "Week starts on"
+msgstr ""

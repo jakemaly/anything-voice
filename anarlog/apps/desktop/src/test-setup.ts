@@ -1,0 +1,55 @@
+import { randomUUID } from "node:crypto";
+import { vi } from "vitest";
+
+Object.defineProperty(globalThis.crypto, "randomUUID", { value: randomUUID });
+
+Object.defineProperty(globalThis.window, "__TAURI_INTERNALS__", {
+  value: {
+    metadata: {
+      currentWindow: {
+        label: "main",
+      },
+      currentWebview: {
+        label: "main",
+      },
+    },
+    invoke: vi.fn().mockRejectedValue(new Error("not available in test")),
+  },
+  writable: true,
+  configurable: true,
+});
+
+vi.mock("@tauri-apps/api/path", () => ({
+  sep: vi.fn().mockReturnValue("/"),
+}));
+
+vi.mock("@hypr/plugin-db", () => ({
+  execute: vi.fn().mockResolvedValue([]),
+  executeProxy: vi.fn().mockResolvedValue({ rows: [] }),
+  subscribe: vi.fn().mockResolvedValue(() => {}),
+}));
+
+vi.mock("@hypr/plugin-analytics", () => ({
+  commands: {
+    event: vi.fn().mockResolvedValue({ status: "ok", data: null }),
+    setProperties: vi.fn().mockResolvedValue({ status: "ok", data: null }),
+    setDisabled: vi.fn().mockResolvedValue({ status: "ok", data: null }),
+    isDisabled: vi.fn().mockResolvedValue({ status: "ok", data: false }),
+  },
+}));
+
+vi.mock("./types/tauri.gen", () => ({
+  commands: {
+    getOnboardingNeeded: vi
+      .fn()
+      .mockResolvedValue({ status: "ok", data: false }),
+    getPinnedTabs: vi.fn().mockResolvedValue({ status: "ok", data: null }),
+    setPinnedTabs: vi.fn().mockResolvedValue({ status: "ok", data: null }),
+    getRecentlyOpenedSessions: vi
+      .fn()
+      .mockResolvedValue({ status: "ok", data: null }),
+    setRecentlyOpenedSessions: vi
+      .fn()
+      .mockResolvedValue({ status: "ok", data: null }),
+  },
+}));

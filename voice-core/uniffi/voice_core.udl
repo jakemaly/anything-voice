@@ -1,0 +1,124 @@
+namespace voice_core {
+    // --- STT Models ---
+
+    [Error=1]
+    enum SttError {
+        "ModelNotFound",
+        "DownloadFailed",
+        "InferenceFailed",
+        "InvalidAudio",
+        "ModelNotLoaded",
+    };
+
+    dictionary SttModelInfo {
+        string key;
+        string display_name;
+        string description;
+        long size_bytes;
+        boolean requires_apple_silicon;
+        string download_size;
+    };
+
+    [Throws=SttError]
+    sequence<SttModelInfo> list_available_models();
+
+    [Throws=SttError]
+    boolean is_model_downloaded(string model_key);
+
+    [Throws=SttError]
+    void download_model(string model_key, DownloadProgressCallback callback);
+
+    [Throws=SttError]
+    void cancel_download(string model_key);
+
+    [Throws=SttError]
+    void delete_model(string model_key);
+
+    // --- STT Session ---
+
+    [Throws=SttError]
+    SttSession start_session(string model_key);
+
+    [Throws=SttError]
+    string process_chunk(SttSession session, sequence<float> samples);
+
+    [Throws=SttError]
+    string finalize_session(SttSession session, sequence<float> samples);
+
+    [Throws=SttError]
+    void cancel_session(SttSession session);
+
+    callback DownloadProgressCallback {
+        void on_progress(float progress);
+    };
+
+    // --- Intelligence ---
+
+    [Error=2]
+    enum AiError {
+        "TemplateRenderFailed",
+        "LlmRequestFailed",
+        "ConfigError",
+        "InvalidProvider",
+    };
+
+    dictionary InferenceRequest {
+        string prompt;
+        string model;
+        string provider_id;
+        string api_key;
+        string base_url;
+        float temperature;
+    };
+
+    dictionary AiResponse {
+        string content;
+        string thinking;
+    };
+
+    [Throws=AiError]
+    string render_prompt(string template_name, string user_context);
+
+    [Throws=AiError]
+    AiResponse run_inference(InferenceRequest request);
+
+    callback StreamCallback {
+        void on_chunk(string chunk);
+        void on_done(string final_content);
+        void on_error(string error);
+    };
+
+    [Throws=AiError]
+    void stream_inference(InferenceRequest request, StreamCallback callback);
+
+    // --- Provider Config ---
+
+    [Error=3]
+    enum ConfigError {
+        "ReadFailed",
+        "WriteFailed",
+        "ParseFailed",
+    };
+
+    dictionary ProviderEntry {
+        string base_url;
+        string api_key;
+        string fingerprint;
+    };
+
+    dictionary ProviderConfig {
+        string selected_provider;
+        string selected_model;
+        dictionary<string, ProviderEntry> providers;
+    };
+
+    [Throws=ConfigError]
+    ProviderConfig read_provider_config();
+
+    [Throws=ConfigError]
+    void write_provider_config(ProviderConfig config);
+
+    // --- Config Paths ---
+
+    string voice_hub_dir();
+};

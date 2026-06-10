@@ -1,0 +1,179 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-05-30 20:26+0900\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: jv\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/settings/general/spoken-languages.tsx:177
+msgid "Add language"
+msgstr "Tambah basa"
+
+#: src/settings/general/spoken-languages.tsx:175
+msgid "Add spoken language"
+msgstr "Tambahake basa lisan"
+
+#: src/settings/general/spoken-languages.tsx:116
+msgid "Additional spoken languages"
+msgstr "Basa lisan tambahan"
+
+#: src/settings/general/app-settings.tsx:35
+msgid "Always ready without manually launching."
+msgstr "Tansah siyap tanpa diluncurake kanthi manual."
+
+#: src/settings/general/index.tsx:136
+msgid "App"
+msgstr "Aplikasi"
+
+#: src/settings/general/theme.tsx:45
+msgid "Appearance"
+msgstr ""
+
+#: src/settings/general/app-settings.tsx:71
+msgid "Automatically start listening when an event-backed note reaches its scheduled start time."
+msgstr "Miwiti kanthi otomatis ngrungokake nalika cathetan sing didhukung acara tekan wektu wiwitan sing dijadwalake."
+
+#: src/settings/general/app-settings.tsx:82
+msgid "Automatically stop listening when the meeting app releases the microphone."
+msgstr "Otomatis mandheg ngrungokake nalika aplikasi rapat ngeculake mikropon."
+
+#: src/settings/general/theme.tsx:48
+msgid "Choose light, dark, or match your system setting."
+msgstr ""
+
+#: src/settings/general/theme.tsx:35
+msgid "Dark"
+msgstr ""
+
+#: src/settings/general/index.tsx:255
+msgid "Data"
+msgstr "data"
+
+#: src/settings/general/week-start.tsx:58
+msgid "First day of the week in the calendar view"
+msgstr ""
+
+#: src/settings/general/index.tsx:206
+msgid "Language & Region"
+msgstr "Basa & Wilayah"
+
+#: src/settings/general/main-language.tsx:53
+msgid "Language for summaries, chats, and AI-generated responses"
+msgstr "Basa kanggo ringkesan, obrolan, lan tanggapan sing digawe AI"
+
+#: src/settings/general/theme.tsx:34
+msgid "Light"
+msgstr ""
+
+#: src/settings/general/main-language.tsx:50
+msgid "Main language"
+msgstr "Basa utama"
+
+#: src/settings/general/app-settings.tsx:65
+msgid "Meetings"
+msgstr "Patemon"
+
+#: src/settings/general/week-start.tsx:40
+msgid "Monday"
+msgstr ""
+
+#: src/settings/general/main-language.tsx:64
+#: src/settings/general/spoken-languages.tsx:218
+msgid "No matching languages found"
+msgstr "Ora ditemokake basa sing cocog"
+
+#: src/settings/general/searchable-select.tsx:122
+msgid "No results found."
+msgstr ""
+
+#: src/settings/general/index.tsx:265
+msgid "Notifications"
+msgstr "Kabar"
+
+#: src/settings/general/index.tsx:274
+msgid "Permissions"
+msgstr ""
+
+#: src/settings/general/main-language.tsx:63
+msgid "Search language..."
+msgstr "Telusuri basa..."
+
+#: src/settings/general/searchable-select.tsx:116
+msgid "Search..."
+msgstr ""
+
+#: src/settings/general/theme.tsx:61
+msgid "Select appearance"
+msgstr ""
+
+#: src/settings/general/week-start.tsx:63
+msgid "Select day"
+msgstr ""
+
+#: src/settings/general/main-language.tsx:62
+msgid "Select language"
+msgstr "Pilih basa"
+
+#: src/settings/general/searchable-select.tsx:95
+msgid "Select..."
+msgstr ""
+
+#: src/settings/general/app-settings.tsx:53
+msgid "Send anonymous usage analytics to help improve Anarlog."
+msgstr "Kirim analisis panggunaan anonim kanggo mbantu nambah Anarlog."
+
+#: src/settings/general/app-settings.tsx:51
+msgid "Share usage data"
+msgstr "Nuduhake data panggunaan"
+
+#: src/settings/general/app-settings.tsx:91
+msgid "Show floating bar"
+msgstr "Tampilake bar ngambang"
+
+#: src/settings/general/app-settings.tsx:93
+msgid "Show the compact floating control while listening."
+msgstr "Tampilake kontrol ngambang kompak nalika ngrungokake."
+
+#: src/settings/general/app-settings.tsx:41
+msgid "Show timeline in sidebar"
+msgstr "Tampilake garis wektu ing sidebar"
+
+#: src/settings/general/app-settings.tsx:33
+msgid "Start Anarlog at login"
+msgstr "Mulai Anarlog nalika mlebu"
+
+#: src/settings/general/app-settings.tsx:69
+msgid "Start when meeting begins"
+msgstr "Miwiti nalika rapat diwiwiti"
+
+#: src/settings/general/app-settings.tsx:80
+msgid "Stop when meeting ends"
+msgstr "Mandheg nalika rapat rampung"
+
+#: src/settings/general/week-start.tsx:39
+msgid "Sunday"
+msgstr ""
+
+#: src/settings/general/theme.tsx:36
+msgid "System"
+msgstr ""
+
+#: src/settings/general/spoken-languages.tsx:119
+msgid "The main language is always included for transcription"
+msgstr "Basa utama mesthi kalebu kanggo transkripsi"
+
+#: src/settings/general/app-settings.tsx:43
+msgid "Use the left sidebar timeline instead of the top timeline."
+msgstr "Gunakake garis wektu sidebar kiwa tinimbang garis wektu ndhuwur."
+
+#: src/settings/general/week-start.tsx:55
+msgid "Week starts on"
+msgstr ""
