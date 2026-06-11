@@ -1,5 +1,6 @@
 # Dependencies (Never track these, they bloat Git)
 node_modules/
+voice-core/target/
 .pnpm-store/
 .yarn/
 
