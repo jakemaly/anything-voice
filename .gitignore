@@ -23,6 +23,13 @@ build/
 .DS_Store
 Thumbs.db
 
+# Generated Swift/FFI bindings (rebuilt by voice-app/build-rust.sh)
+voice-app/voice-core-generated/
+voice-app/voice-core.xcframework/
+
+# Rust build artifacts (cross-platform)
+voice-core/target/
+
 # IDEs and editors
 .vscode/
 .idea/
